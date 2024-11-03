@@ -8,10 +8,10 @@
         <h2 class="text-4xl font-bold font-poppins">Yachayhuasi Gestión De Libros!</h2>
         <p class="text-xl font-normal font-poppins">Descubre la plataforma de préstamo de libros más popular con
           Yachayhuasi. Comience a compartir y pedir prestado hoy.</p>
-        <button
-          class="middle font-poppins  center rounded-2xl bg-[#0575E6] py-3 px-6  font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
+        <a routerLink="/home"
+          class="middle font-poppins  center rounded-2xl bg-primary py-3 px-6  font-bold uppercase text-white shadow-md shadow-blue-500/20 transition-all hover:shadow-lg hover:shadow-blue-500/40 focus:opacity-[0.85] focus:shadow-none active:opacity-[0.85] active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none">
           Leer más
-        </button>
+        </a>
       </div>
 
     </div>
@@ -22,16 +22,16 @@
         <h1 class="text-4xl font-bold font-poppins">¡Hola de nuevo!</h1>
         <p class="text-2xl font-poppins">Nos alegra tenerte de vuelta.</p>
         <div class="flex flex-col w-full gap-8 mt-5">
-          <div class="flex items-center px-6 py-6 border-2 rounded-full">
+          <div class="flex items-center p-5 border-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24"
               stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                 d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
             </svg>
             <input id="email" class="w-full pl-2 text-xl border-none outline-none bg-inherit " type="email" name="email"
-              placeholder="Email Address" />
+              placeholder="Correo Electrónico" />
           </div>
-          <div class="flex items-center px-6 py-6 border-2 rounded-full">
+          <div class="flex items-center p-5 border-2 rounded-full">
             <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" viewBox="0 0 20 20"
               fill="currentColor">
               <path fillRule="evenodd"
@@ -39,9 +39,10 @@
                 clipRule="evenodd" />
             </svg>
             <input class="w-full pl-2 text-xl border-none outline-none bg-inherit" type="password" name="password" id="password"
-              placeholder="Password" />
+              placeholder="Contraseña" />
           </div>
-          <button type="submit" class="block w-full  text-xl  px-6 py-5  font-normal text-white transition-all duration-500 bg-[#0575E6] rounded-full hover:bg-[#0575E6] hover:-translate-y-1">Login</button>
+          <button type="submit" class="block w-full p-5 text-xl font-normal text-white transition-all duration-500 rounded-full bg-primary hover:bg-primary hover:-translate-y-1">Login</button>
+          <a routerLink="/register" class="text-xl text-gray-400 font-poppins">¿No Tienes Cuenta? Regístrate Primero!</a>
         </div>
       </div>
     </div>

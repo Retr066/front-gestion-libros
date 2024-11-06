@@ -18,4 +18,8 @@ export interface JwtToken {
 }
 
 
-export interface UserLogin extends User , JwtToken {}
+export interface LoginResponse {
+    user: User;
+    token: string;
+}
+

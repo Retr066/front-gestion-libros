@@ -8,8 +8,14 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
     NavbarComponent
   ],
   templateUrl: './home.component.html',
-  styleUrl: './home.component.css'
+  
 })
 export class HomeComponent {
+
+  token = localStorage.getItem('JwtToken');
+
+  constructor() { 
+    console.log(this.token)
+  }
 
 }

@@ -5,7 +5,7 @@
 
       <div
         class="absolute inset-0 flex flex-col items-center justify-center w-3/5 gap-4 p-4 mx-auto text-center text-white">
-        <h2 class="text-4xl font-bold font-poppins">Yachayhuasi Gestión De Libros!</h2>
+        <h2 class="text-4xl font-bold text-white font-poppins">Yachayhuasi Gestión De Libros!</h2>
         <p class="text-xl font-normal font-poppins">Descubre la plataforma de préstamo de libros más popular con
           Yachayhuasi. Comience a compartir y pedir prestado hoy.</p>
         <a routerLink="/home"
@@ -21,29 +21,58 @@
         <img src="assets/images/logo_login.png" class="w-64 h-64">
         <h1 class="text-4xl font-bold font-poppins">¡Hola de nuevo!</h1>
         <p class="text-2xl font-poppins">Nos alegra tenerte de vuelta.</p>
-        <div class="flex flex-col w-full gap-8 mt-5">
-          <div class="flex items-center p-5 border-2 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" fill="none" viewBox="0 0 24 24"
-              stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
-                d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
-            </svg>
-            <input id="email" class="w-full pl-2 text-xl border-none outline-none bg-inherit " type="email" name="email"
-              placeholder="Correo Electrónico" />
+        <form [formGroup]="loginForm" (ngSubmit)="onLogin()" class="flex flex-col w-full gap-8 mt-5">
+          <div>
+            <div class="flex items-center p-5 border-2 rounded-full"
+              [ngClass]="{'border-red-500': this.loginForm.get('email')?.invalid && touchedFields}">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400"
+                [ngClass]="{'text-red-500': this.loginForm.get('email')?.invalid && touchedFields}" fill="none"
+                viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
+                  d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207" />
+              </svg>
+              <input class="w-full pl-2 text-xl border-none outline-none bg-inherit " type="email"
+                formControlName="email" placeholder="Correo Electrónico" />
+            </div>
+            <div *ngIf="this.loginForm.get('email')?.invalid && touchedFields"
+              class="text-sm text-center text-red-500 font-poppins">
+              <ng-container *ngIf="this.loginForm.get('email')?.errors">
+                <div *ngIf="loginForm.get('email')?.hasError('required')">El correo es obligatorio.</div>
+                <div *ngIf="loginForm.get('email')?.hasError('email')">El correo debe ser válido.</div>
+              </ng-container>
+            </div>
           </div>
-          <div class="flex items-center p-5 border-2 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400" viewBox="0 0 20 20"
-              fill="currentColor">
-              <path fillRule="evenodd"
-                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
-                clipRule="evenodd" />
-            </svg>
-            <input class="w-full pl-2 text-xl border-none outline-none bg-inherit" type="password" name="password" id="password"
-              placeholder="Contraseña" />
+
+          <div>
+            <div class="flex items-center p-5 border-2 rounded-full"
+              [ngClass]="{'border-red-500': this.loginForm.get('password')?.invalid && touchedFields}">
+              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-400"
+                [ngClass]="{'text-red-500': this.loginForm.get('password')?.invalid && touchedFields}"
+                viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd"
+                  d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2zm8-2v2H7V7a3 3 0 016 0z"
+                  clipRule="evenodd" />
+              </svg>
+              <input class="w-full pl-2 text-xl border-none outline-none bg-inherit" type="password"
+                formControlName="password" placeholder="Contraseña" />
+            </div>
+
+            <div *ngIf="this.loginForm.get('password')?.invalid && touchedFields"
+              class="text-sm text-center text-red-500 font-poppins">
+              <ng-container *ngIf="this.loginForm.get('password')?.errors">
+                <div *ngIf="loginForm.get('password')?.hasError('required')">La contraseña es obligatoria.</div>
+              </ng-container>
+            </div>
           </div>
-          <button type="submit" class="block w-full p-5 text-xl font-normal text-white transition-all duration-500 rounded-full bg-primary hover:bg-primary hover:-translate-y-1">Login</button>
-          <a routerLink="/register" class="text-xl text-gray-400 font-poppins">¿No Tienes Cuenta? Regístrate Primero!</a>
-        </div>
+
+          <button type="submit"
+            class="block w-full p-5 text-xl font-normal text-white transition-all duration-500 rounded-full bg-primary hover:bg-primary hover:-translate-y-1 disabled:opacity-50 disabled:shadow-none disabled:pointer-events-none"
+            [disabled]="loading"
+            >Login</button>
+          <a routerLink="/register" class="text-xl text-gray-400 font-poppins">¿No Tienes Cuenta? Regístrate
+            Primero!</a>
+            <nz-alert  class="absolute top-0 right-0 pt-3 pr-10 max-w-96" *ngIf="errorMessage" nzCloseable nzBanner nzType="error" nzMessage="{{ errorMessage }}" nzShowIcon></nz-alert>
+        </form>
       </div>
     </div>
   </div>

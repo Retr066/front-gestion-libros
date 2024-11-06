@@ -1,5 +1,6 @@
-import axios from 'axios'
+import axios, { AxiosError, AxiosResponse } from 'axios'
 import { HttpMethod } from '../enums/HttpMethod';
+import { tokenKey } from '../constants/token';
 
 const axiosInstance = axios.create({
     baseURL: 'http://localhost:3000/api',
@@ -11,7 +12,7 @@ const axiosInstance = axios.create({
 
  axiosInstance.interceptors.request.use(
     (config) => {
-        const token = localStorage.getItem('token');
+        const token = localStorage.getItem(tokenKey);
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }
@@ -24,12 +25,12 @@ const axiosInstance = axios.create({
 
 
  axiosInstance.interceptors.response.use(
-    (response) => {
-        return response;
+    (response: AxiosResponse) => {
+        return response.data;
     },
-    (error) => {
-        if (error.response.status === 401) {
-            localStorage.removeItem('token');
+    (error: AxiosError) => {
+        if (error?.response?.status === 401) {
+            localStorage.removeItem(tokenKey);
             window.location.replace('/login');
         }
         return Promise.reject(error);

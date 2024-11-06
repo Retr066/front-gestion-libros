@@ -1,44 +1,76 @@
-import { Component } from '@angular/core';
-import { NgOptimizedImage } from '@angular/common';
+import { Component, Inject } from '@angular/core';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 import { Router } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
+import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Login } from '../../models/auth.models';
+import { NzAlertModule } from 'ng-zorro-antd/alert';
+
 
 @Component({
   selector: 'app-login',
   standalone: true,
   imports: [
-    NgOptimizedImage, RouterLink,
-    HttpClientModule
+    NgOptimizedImage, RouterLink,ReactiveFormsModule, CommonModule , NzAlertModule
+    
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
   providers: [AuthService]
 
 })
 export class LoginComponent {
-  email: string = '';
-  password: string = '';
   errorMessage: string | null = null;
+  loginForm: FormGroup;
+  touchedFields = false;
+  loading = false;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private formBuilder: FormBuilder,private authService: AuthService, private router: Router) {
+    this.loginForm = this.formBuilder.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]]
+    });
+  }
 
   async onLogin(): Promise<void> {
+
+      this.touchedFields = true;
+      if (!this.loginForm.valid) {
+        console.log('Formulario inválido',this.loginForm.get('password')?.errors);
+          return;
+      }
+
+      const loginData: Login = this.loginForm.value;
+
       try {
           // Llamamos a la función login en el servicio, que usa axios
-          const response = await this.authService.login({
-              email: this.email,
-              password: this.password
-          });
+
+          this.loading = true;
+          const response = await this.authService.login(loginData);
           
           // Redirige a la página principal o a otra parte de la aplicación si la autenticación es exitosa
           if (response.status === 200) {
-              this.router.navigate(['/dashboard']);
+              this.errorMessage = null;
+              this.touchedFields = false;
+              this.loginForm.reset(); // Limpia el formulario tras el registro exitoso
+              this.loginForm.clearValidators();
+            
+              this.router.navigate(['/home']);
           }
-      } catch (error) {
-          console.error('Error de inicio de sesión', error);
-          this.errorMessage = 'Credenciales incorrectas o error en el servidor';
+      } catch (error:any) {
+        console.log(error);
+        if (error.response && error.response.data) {
+          if (error.response.data['errors']) {
+            const errorsValidations = error.response.data['errors'].map((error: { msg: string; }) => error.msg);
+            this.errorMessage = errorsValidations.join('.\n');
+          } else {
+            this.errorMessage = error.response.data.message; // Mensaje de error
+          }
+        } else {
+          this.errorMessage = 'Ocurrió un error inesperado. Intenta de nuevo.';
+        }
+      } finally {
+          this.loading = false;
       }
   }
 
